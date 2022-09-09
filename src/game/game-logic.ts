@@ -16,8 +16,24 @@ export function diceRoll() {
     // Rolls a d6
     let roll = Math.floor(Math.random() * 7)
     console.log("roll:" + roll)
-    gameEvent()
-    return (Math.floor(Math.random() * 7))
+    gameEventPlacer(roll)
+    return (roll)
+}
+
+export function locationDiceRoll() {
+    let evRoll = Math.floor(Math.random() * 7)
+    gameEvent(evRoll)
+}
+
+function gameEventPlacer(roll:number) {
+    if (roll < 2 ) {
+        eventPlace = "In the Garden..."
+        return(eventPlace)
+    }
+    else {
+        eventPlace = "A knock at the door..."
+        return(eventPlace)
+    }
 }
 
 export function gameEvent() {

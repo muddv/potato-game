@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import { useState } from 'react'
-import { diceRoll, useDestiny, usePotatoes, useOrcs, txt, eventPlace, eventDescription, eventEffect } from '../game/game-logic'
+import { diceRoll, useDestiny, usePotatoes, useOrcs, txt, eventPlace, eventDescription, eventEffect, locationDiceRoll } from '../game/game-logic'
 
 export function GameInterface(props: { destiny: number, potatoes: number, orcs: number }) {
   return (
@@ -63,6 +63,16 @@ const Home: NextPage = () => {
     setEvEffect(eventEffect)
   }
 
+  const [showModalText, setShowModalText] = useState(false)
+
+  function setModalTextClass() {
+    setShowModalText(!showModalText)
+  }
+
+  let modalTextCls = showModalText ? "hidden" : ""
+
+  let modalBtnCls = showModalText ? "border-2 border-black hover:bg-slate-400" : "hidden"
+
   return (
     <>
       <Head>
@@ -77,27 +87,38 @@ const Home: NextPage = () => {
           <div>You are a halfing, just trying to exist meanwhile, the dark lord rampages across the world. You do not care about this. You are trying to farm potatoes because what could a halfling possibly do about it anyway? Roll the dice and see what new day brings to you!</div>
         </div>
         <button className="border-2 border-black hover:bg-slate-400"
-          onClick={() => { diceRoll(); desChange(); potChange(); orcChange(); textChange(); showEventWindow(); setEventLocation(); setEventDescription(); setEventEffect() }}>
+          onClick={() => { diceRoll(); showEventWindow(); setEventLocation(); setModalTextClass() }}>
           roll dice!
         </button>
+        
+        {/* EVENT ~MODAL WINDOW */}
         <div className={containerClass}>
           <div className="flex flex-col justify-center align-center">
             <div className="font-semibold text-lg text-center">{evLocation}</div>
-            <div className="text-center my-5">{evDescription}</div>
-            <div className="flex gap-x-5 text-center ml-5 mb-5 font-semibold">
-              <div>Destiny
-                <div className="font-normal">-{evEffect[0]}</div>
+            <button onClick={() => { setModalTextClass(); locationDiceRoll(); desChange(); potChange(); orcChange(); textChange(); setEventDescription(); setEventEffect(); }} 
+            className={modalBtnCls}>
+              Roll the dice and see what it is
+              </button>
+            <div className={modalTextCls}>
+              <div className="text-center my-5">{evDescription}</div>
+              <div className="flex gap-x-5 text-center ml-5 mb-5 font-semibold">
+                <div>Destiny
+                  <div className="font-normal">-{evEffect[0]}</div>
+                </div>
+                <div>Potatoes
+                  <div className="font-normal">-{evEffect[1]}</div>
+                </div>
+                <div>Orcs
+                  <div className="font-normal">-{evEffect[2]}</div>
+                </div>
               </div>
-              <div>Potatoes
-                <div className="font-normal">-{evEffect[1]}</div>
-              </div>
-              <div>Orcs
-                <div className="font-normal">-{evEffect[2]}</div>
-              </div>
+              <button className="border-2 border-black hover:bg-slate-400 ml-24 w-10" onClick={showEventWindow}>ok</button>
             </div>
-            <button className="border-2 border-black hover:bg-slate-400" onClick={showEventWindow}>ok</button>
           </div>
         </div>
+        {/* END OF EVENT ~MODAL WINDOW */}
+
+        <div className="font-semibold">Past Event</div>
         <div>{text}</div>
       </div>
     </>
