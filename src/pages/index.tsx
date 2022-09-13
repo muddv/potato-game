@@ -71,7 +71,20 @@ const Home: NextPage = () => {
 
   let modalTextCls = showModalText ? "hidden" : ""
 
-  let modalBtnCls = showModalText ? "border-2 border-black hover:bg-slate-400" : "hidden"
+  let modalBtnCls = showModalText ? "border-2 border-black hover:bg-slate-400 mt-24" : "hidden"
+
+  let modalTxtCls = showModalText ? "text-center" : "hidden"
+
+  const [modalTxt, setModalTxt] = useState("You spend your day")
+
+  function setPreviewText() {
+    if (evLocation == "In the Garden...") {
+      setModalTxt("While working in the garden you notice something...")
+    }
+    else if (evLocation === "A knock at the door...") {
+      setModalTxt("You hear something at your door...")
+    }
+  }
 
   return (
     <>
@@ -87,7 +100,7 @@ const Home: NextPage = () => {
           <div>You are a halfing, just trying to exist meanwhile, the dark lord rampages across the world. You do not care about this. You are trying to farm potatoes because what could a halfling possibly do about it anyway? Roll the dice and see what new day brings to you!</div>
         </div>
         <button className="border-2 border-black hover:bg-slate-400"
-          onClick={() => { diceRoll(); showEventWindow(); setEventLocation(); setModalTextClass() }}>
+          onClick={() => { diceRoll(); showEventWindow(); setEventLocation(); setModalTextClass(); setPreviewText(); }}>
           roll dice!
         </button>
         
@@ -95,6 +108,7 @@ const Home: NextPage = () => {
         <div className={containerClass}>
           <div className="flex flex-col justify-center align-center">
             <div className="font-semibold text-lg text-center">{evLocation}</div>
+            <div className={modalTxtCls}>{modalTxt}</div>
             <button onClick={() => { setModalTextClass(); locationDiceRoll(); desChange(); potChange(); orcChange(); textChange(); setEventDescription(); setEventEffect(); }} 
             className={modalBtnCls}>
               Roll the dice and see what it is
@@ -103,13 +117,13 @@ const Home: NextPage = () => {
               <div className="text-center my-5">{evDescription}</div>
               <div className="flex gap-x-5 text-center ml-5 mb-5 font-semibold">
                 <div>Destiny
-                  <div className="font-normal">-{evEffect[0]}</div>
+                  <div className="font-normal">{evEffect[0]}</div>
                 </div>
                 <div>Potatoes
-                  <div className="font-normal">-{evEffect[1]}</div>
+                  <div className="font-normal">{evEffect[1]}</div>
                 </div>
                 <div>Orcs
-                  <div className="font-normal">-{evEffect[2]}</div>
+                  <div className="font-normal">{evEffect[2]}</div>
                 </div>
               </div>
               <button className="border-2 border-black hover:bg-slate-400 ml-24 w-10" onClick={showEventWindow}>ok</button>
