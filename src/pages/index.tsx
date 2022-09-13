@@ -1,11 +1,15 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { handleClientScriptLoad } from 'next/script'
 import { useState } from 'react'
-import { diceRoll, useDestiny, usePotatoes, useOrcs, txt, eventPlace, eventDescription, eventEffect, locationDiceRoll } from '../game/game-logic'
+import { diceRoll, useDestiny, usePotatoes, useOrcs, txt, eventPlace, eventDescription, eventEffect, locationDiceRoll, burrow } from '../game/game-logic'
 
 export function GameInterface(props: { destiny: number, potatoes: number, orcs: number }) {
+
+  
+
   return (
-    <div className='border-2 border-black'>
+    <div className="border-2 border-black flex">
       <div className="flex gap-5 flex-col mr-auto ml-36">
         <div className="destiny flex flex-row gap-5">
           <div className="mr-3">Destiny</div>
@@ -86,6 +90,37 @@ const Home: NextPage = () => {
     }
   }
 
+  const [gameState, setGameState] = useState(true)
+
+  function switchGameState() {
+    if (destiny >= 10 || potatoes >= 10 || orcs >= 10) {
+      setGameState(false)
+    }
+  }
+
+  let gameStateTextClass = gameState ? "" : "hidden"
+
+  let gameOverTextClass = gameState ? "hidden" : ""
+
+  const [statsText, setStatsText] = useState("Your garden is new and there are not a lot of orc")
+
+  function changeStatsText() {
+    let potatoChange = false
+    if (orcs > 2) {
+      setStatsText("There are far too many orcs for your liking")
+    } 
+    if (destiny > 2) {
+      setStatsText("Everywhere you look something calls you for adventure... Better hurry up with potatoes")
+    } 
+    if (potatoes > 2) {
+      setStatsText("You are reliefed to have a small stash of potatoes")
+      potatoChange = true
+    } 
+    if (potatoChange == true && potatoes < 3) {
+      setStatsText("You are going to need more potatoes")
+    }
+  }
+
   return (
     <>
       <Head>
@@ -97,7 +132,11 @@ const Home: NextPage = () => {
       <div className="flex flex-col items-center justify-center">
         <div className="w-1/2">
           <div className="mb-5"><GameInterface destiny={destiny} potatoes={potatoes} orcs={orcs}></GameInterface></div>
-          <div>You are a halfing, just trying to exist meanwhile, the dark lord rampages across the world. You do not care about this. You are trying to farm potatoes because what could a halfling possibly do about it anyway? Roll the dice and see what new day brings to you!</div>
+          <div className="text-center">{statsText}</div>
+          <button onClick={() => {burrow(); potChange(); orcChange(); changeStatsText();}} className="border-2 border-black hover:bg-slate-400 h-24 w-36 mt-2 mr-10">Hurl in the back garden -1 orc -1 potato</button>
+          
+          <div className={gameStateTextClass}>You are a halfing, just trying to exist meanwhile, the dark lord rampages across the world. You do not care about this. You are trying to farm potatoes because what could a halfling possibly do about it anyway? Roll the dice and see what new day brings to you!</div>
+          <div className={gameOverTextClass}>GAME OVER</div>
         </div>
         <button className="border-2 border-black hover:bg-slate-400"
           onClick={() => { diceRoll(); showEventWindow(); setEventLocation(); setModalTextClass(); setPreviewText(); }}>
@@ -109,7 +148,7 @@ const Home: NextPage = () => {
           <div className="flex flex-col justify-center align-center">
             <div className="font-semibold text-lg text-center">{evLocation}</div>
             <div className={modalTxtCls}>{modalTxt}</div>
-            <button onClick={() => { setModalTextClass(); locationDiceRoll(); desChange(); potChange(); orcChange(); textChange(); setEventDescription(); setEventEffect(); }} 
+            <button onClick={() => { setModalTextClass(); locationDiceRoll(); desChange(); potChange(); orcChange(); textChange(); setEventDescription(); setEventEffect(); changeStatsText(); }} 
             className={modalBtnCls}>
               Roll the dice and see what it is
               </button>
@@ -126,7 +165,7 @@ const Home: NextPage = () => {
                   <div className="font-normal">{evEffect[2]}</div>
                 </div>
               </div>
-              <button className="border-2 border-black hover:bg-slate-400 ml-24 w-10" onClick={showEventWindow}>ok</button>
+              <button className="border-2 border-black hover:bg-slate-400 ml-24 w-10" onClick={() => {showEventWindow(); switchGameState();}}>ok</button>
             </div>
           </div>
         </div>
