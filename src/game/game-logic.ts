@@ -12,6 +12,8 @@ export let eventDescription = "Something happened"
 
 export let eventEffect = [0, 0, 0]
 
+export let danger = 1
+
 export function diceRoll() {
     // Rolls a d6
     let roll = Math.floor(Math.random() * 7)
@@ -30,10 +32,20 @@ function gameEventPlacer(roll: number) {
         eventPlace = "In the Garden..."
         return (eventPlace)
     }
-    else {
+    else if (roll > 1 && roll < 4) {
         eventPlace = "A knock at the door..."
         return (eventPlace)
     }
+    else {
+        eventPlace = "The world becomes more dangerouse..."
+        dangerIncrease
+    }
+}
+
+function dangerIncrease(danger:number) {
+    danger = danger + 1
+    return danger
+
 }
 
 export function gameEvent(evRoll: number) {
@@ -276,10 +288,19 @@ export const useOrcs = () => {
     return { orcs, orcChange }
 }
 
+export const useDanger = () => {
+    const [dangerLvl, setDangerLvl] = useState(1)
+
+    const dangerChange = () => {
+        setDangerLvl(danger)
+    }
+
+    return { dangerLvl, dangerChange }
+}
 
 export function burrow() {
-    if (parameters[1] > 0 && parameters[2] > 0) {
-        parameters[1] -= 1
+    if (parameters[1] - danger > -1 && parameters[2] > 0) {
+        parameters[1] -= danger
         parameters[2] -= 1
         return parameters
     }

@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { handleClientScriptLoad } from 'next/script'
 import { useState } from 'react'
-import { diceRoll, useDestiny, usePotatoes, useOrcs, txt, eventPlace, eventDescription, eventEffect, locationDiceRoll, burrow } from '../game/game-logic'
+import { diceRoll, useDestiny, usePotatoes, useOrcs, txt, eventPlace, eventDescription, eventEffect, locationDiceRoll, burrow, useDanger } from '../game/game-logic'
 
 export function GameInterface(props: { destiny: number, potatoes: number, orcs: number }) {
 
@@ -33,6 +33,7 @@ const Home: NextPage = () => {
   const { destiny, desChange } = useDestiny()
   const { potatoes, potChange } = usePotatoes()
   const { orcs, orcChange } = useOrcs()
+  const { dangerLvl, dangerChange } = useDanger()
 
   const [text, setText] = useState(txt)
 
@@ -133,7 +134,7 @@ const Home: NextPage = () => {
         <div className="w-1/2">
           <div className="mb-5"><GameInterface destiny={destiny} potatoes={potatoes} orcs={orcs}></GameInterface></div>
           <div className="text-center">{statsText}</div>
-          <button onClick={() => {burrow(); potChange(); orcChange(); changeStatsText();}} className="border-2 border-black hover:bg-slate-400 h-24 w-36 mt-2 mr-10">Hurl in the back garden -1 orc -1 potato</button>
+          <button onClick={() => {burrow(); potChange(); orcChange(); changeStatsText(); dangerChange();}} className="border-2 border-black hover:bg-slate-400 h-24 w-36 mt-2 mr-10">Hurl in the back garden -1 orc -{dangerLvl} potato</button>
           
           <div className={gameStateTextClass}>You are a halfing, just trying to exist meanwhile, the dark lord rampages across the world. You do not care about this. You are trying to farm potatoes because what could a halfling possibly do about it anyway? Roll the dice and see what new day brings to you!</div>
           <div className={gameOverTextClass}>GAME OVER</div>
