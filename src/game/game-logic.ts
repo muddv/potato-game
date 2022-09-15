@@ -1,265 +1,123 @@
-import { useState } from "react"
+import { useState } from "react";
 
-let parameters = [0, 0, 0]
+export let gameState = {
+    danger: 1,
+    stats: [0, 0, 0],
+    text: "Your garden needs a lot of work",
+}
 
-//MAKE THIS AN OBJECT
-
-export let txt = "the day is new"
-
-export let eventPlace = "Somewhere"
-
-export let eventDescription = "Something happened"
-
-export let eventEffect = [0, 0, 0]
-
-export let danger = 1
+export let gameEvent =  {
+    location: "Somewhere",
+    description: "Something happened",
+    effect: [0, 0, 0]
+}
 
 export function diceRoll() {
-    // Rolls a d6
-    let roll = Math.floor(Math.random() * 7)
-    console.log("roll:" + roll)
-    gameEventPlacer(roll)
-    return (roll)
+    // Rolls 2 d6s
+    let roll1 = Math.floor(Math.random() * 6) + 1
+    let roll2 = Math.floor(Math.random() * 6) + 1
+    console.log("roll1: ", roll1, " ", "roll2 ", roll2)
+    GameEventDispatcher([roll1, roll2])
 }
 
-export function locationDiceRoll() {
-    let evRoll = Math.floor(Math.random() * 7)
-    gameEvent(evRoll)
-}
-
-function gameEventPlacer(roll: number) {
-    if (roll < 2) {
-        eventPlace = "In the Garden..."
-        return (eventPlace)
-    }
-    else if (roll > 1 && roll < 4) {
-        eventPlace = "A knock at the door..."
-        return (eventPlace)
-    }
-    else {
-        eventPlace = "The world becomes more dangerouse..."
-        dangerIncrease
-    }
-}
-
-function dangerIncrease(danger:number) {
-    danger = danger + 1
-    return danger
-
-}
-
-export function gameEvent(evRoll: number) {
-    interface gameEvent {
-        location: string,
-        description: string
-        effect: number[]
-    }
-    let gardenEvent1: gameEvent = {
-        location: "In the Garden",
-        description: "You happily root about all day in your garden.",
-        effect: [0, 1, 0]
-    }
-    let gardenEvent2: gameEvent = {
-        location: "In the Garden",
-        description: "You narrowly avoid a visitor by hiding in a potato sack.",
-        effect: [1, 1, 0]
-    }
-    let gardenEvent3: gameEvent = {
-        location: "In the Garden",
-        description: "A hooded stranger lingers outside your farm.",
-        effect: [1, 0, 1]
-    }
-    let gardenEvent4: gameEvent = {
-        location: "In the Garden",
-        description: "Your field is rabaged in the night by unseen enemies.",
-        effect: [0, -1, 1]
-    }
-    let gardenEvent5: gameEvent = {
-        location: "In the Garden",
-        description: "You trade potatoes for other delicious foodstuffs.",
-        effect: [0, -1, 0]
-    }
-    let gardenEvent6: gameEvent = {
-        location: "In the Garden",
-        description: "You burrown into a bumper crop of potatoes. Do you cry with joy? Possibly.",
-        effect: [0, 2, 0]
-    }
-    let gardenEvent7: gameEvent = {
-        location: "In the Garden",
-        description: "you meet a friendly cat",
-        effect: [5, 5, 5]
-    }
-    let doorEvent1: gameEvent = {
-        location: "A Knock at the Door",
-        description: "A distant cousin. They are after your potatoes. They may snitch on you.",
-        effect: [0, 0, 1]
-    }
-    let doorEvent2: gameEvent = {
-        location: "A Knock at the Door",
-        description: "A dwarven stranger. You refuse them entry. Ghastly creatures",
-        effect: [1, 0, 0]
-    }
-    let doorEvent3: gameEvent = {
-        location: "A Knock at the Door",
-        description: "A wizard strolls by. You pointedly draw the curtains.",
-        effect: [1, 0, 1]
-    }
-    let doorEvent4: gameEvent = {
-        location: "A Knock at the Door",
-        description: "There are rumours of war in the reaches. You eat some potatoes.",
-        effect: [0, -1, 2]
-    }
-    let doorEvent5: gameEvent = {
-        location: "A Knock at the Door",
-        description: "It's an elf. They are not seriouse people.",
-        effect: [1, 0, 0]
-    }
-    let doorEvent6: gameEvent = {
-        location: "A Knock at the Door",
-        description: "It's a sack of potatoes from a generous neighbour. You really must remember to pay them a visit one of these years.",
-        effect: [0, 2, 0]
-    }
-    let doorEvent7: gameEvent = {
-        location: "A Knock at the Door",
-        description: "you meet a friendly cat",
-        effect: [5, 5, 5]
-    }
-
-    if (eventPlace == "In the Garden...") {
-        if (evRoll == 0) {
-            countScores(parameters, gardenEvent1.effect)
-            txt = gardenEvent1.description
-            eventPlace = gardenEvent1.location
-            eventDescription = gardenEvent1.description
-            eventEffect = gardenEvent1.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
+function GameEventDispatcher(rolls: number[]) {
+    if (rolls[0] < 3) {
+        gameEvent.location = "In the Garden"
+        if (rolls[1] == 0) {
+            gameEvent.description = "You happily root about all day in your garden."
+            gameEvent.effect = [0, 1, 0]
         }
-        if (evRoll == 1) {
-            countScores(parameters, gardenEvent2.effect)
-            txt = gardenEvent2.description
-            eventPlace = gardenEvent2.location
-            eventDescription = gardenEvent2.description
-            eventEffect = gardenEvent2.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
+        if (rolls[1] == 1) {
+            gameEvent.description = "You narrowly avoid a visitor by hiding in a potato sack."
+            gameEvent.effect = [1, 1, 0]
         }
-        if (evRoll == 2) {
-            countScores(parameters, gardenEvent3.effect)
-            txt = gardenEvent3.description
-            eventPlace = gardenEvent3.location
-            eventDescription = gardenEvent3.description
-            eventEffect = gardenEvent3.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
+        if (rolls[1] == 2) {
+            gameEvent.description = "A hooded stranger lingers outside your farm."
+            gameEvent.effect = [1, 0, 1]
         }
-        if (evRoll == 3) {
-            countScores(parameters, gardenEvent4.effect)
-            txt = gardenEvent4.description
-            eventPlace = gardenEvent4.location
-            eventDescription = gardenEvent4.description
-            eventEffect = gardenEvent4.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
+        if (rolls[1] == 3) {
+            gameEvent.description = "Your field is ravaged in the night by unseen enemies."
+            gameEvent.effect = [0, -1, 1]
         }
-        if (evRoll == 4) {
-            countScores(parameters, gardenEvent5.effect)
-            txt = gardenEvent5.description
-            eventPlace = gardenEvent5.location
-            eventDescription = gardenEvent5.description
-            eventEffect = gardenEvent5.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
+        if (rolls[1] == 4) {
+            gameEvent.description = "You trade potatoes for other delicious foodstuffs."
+            gameEvent.effect = [0, -1, 0]
         }
-        if (evRoll == 5) {
-            countScores(parameters, gardenEvent6.effect)
-            txt = gardenEvent6.description
-            eventPlace = gardenEvent6.location
-            eventDescription = gardenEvent6.description
-            eventEffect = gardenEvent6.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
-        }
-
-    }
-    else {
-        if (evRoll == 0) {
-            countScores(parameters, doorEvent1.effect)
-            txt = doorEvent1.description
-            eventPlace = doorEvent1.location
-            eventDescription = doorEvent1.description
-            eventEffect = doorEvent1.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
-        }
-        if (evRoll == 1) {
-            countScores(parameters, doorEvent2.effect)
-            txt = doorEvent2.description
-            eventPlace = doorEvent2.location
-            eventDescription = doorEvent2.description
-            eventEffect = doorEvent2.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
-        }
-        if (evRoll == 2) {
-            countScores(parameters, doorEvent3.effect)
-            txt = doorEvent3.description
-            eventPlace = doorEvent3.location
-            eventDescription = doorEvent3.description
-            eventEffect = doorEvent3.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
-        }
-        if (evRoll == 3) {
-            countScores(parameters, doorEvent4.effect)
-            txt = doorEvent4.description
-            eventPlace = doorEvent4.location
-            eventDescription = doorEvent4.description
-            eventEffect = doorEvent4.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
-        }
-        if (evRoll == 4) {
-            countScores(parameters, doorEvent5.effect)
-            txt = doorEvent5.description
-            eventPlace = doorEvent5.location
-            eventDescription = doorEvent5.description
-            eventEffect = doorEvent5.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
-        }
-        if (evRoll == 5) {
-            countScores(parameters, doorEvent6.effect)
-            txt = doorEvent6.description
-            eventPlace = doorEvent6.location
-            eventDescription = doorEvent6.description
-            eventEffect = doorEvent6.effect
-            return [eventPlace, txt, eventDescription, eventEffect]
+        if (rolls[1] == 5) {
+            gameEvent.description = "You burrown into a bumper crop of potatoes. Do you cry with joy? Possibly."
+            gameEvent.effect = [0, 2, 0]
         }
     }
-
-    countScores(parameters, gardenEvent1.effect)
-    txt = gardenEvent1.description
-    eventPlace = gardenEvent1.location
-    eventDescription = gardenEvent1.description
-    eventEffect = gardenEvent1.effect
-
-    return [eventPlace, txt, eventDescription, eventEffect]
-}
-
-function countScores(parameters: number[], parametersChange: number[]) {
+    else if (rolls[0] > 2 && rolls[0] < 5) {
+        gameEvent.location = "A knock at the Door"
+        if (rolls[1] == 0) {
+            gameEvent.description = "A distant cousin. They are after your potatoes. They may snitch on you."
+            gameEvent.effect = [0, 0, 1]
+        }
+        if (rolls[1] == 1) {
+            gameEvent.description = "A dwarven stranger. You refuse them entry. Ghastly creatures"
+            gameEvent.effect = [1, 0, 0]
+        }
+        if (rolls[1] == 2) {
+            gameEvent.description = "A wizard strolls by. You pointedly draw the curtains."
+            gameEvent.effect = [1, 0, 1]
+        }
+        if (rolls[1] == 3) {
+            gameEvent.description = "There are rumours of war in the reaches. You eat some potatoes."
+            gameEvent.effect = [0, -1, 2]
+        }
+        if (rolls[1] == 4) {
+            gameEvent.description = "It's an elf. They are not seriouse people."
+            gameEvent.effect = [1, 0, 0]
+        }
+        if (rolls[1] == 5) {
+            gameEvent.description = "It's a sack of potatoes from a generous neighbour. You really must remember to pay them a visit one of these years."
+            gameEvent.effect = [0, 2, 0]
+        }
+    }
+    else if (rolls[0] > 4) {
+        gameEvent.location = "The world becomes more dangerous"
+        gameEvent.description = "Everywhere you look there seems to be more signs of dark forces approaching, you will need more potatoes. (Burrowing now costs more.)"
+        gameEvent.effect = [0, 0, 0]
+        gameState.danger += 1
+    }
     for (let i = 0; i < 3; i++) {
-        parameters[i] += parametersChange[i]
-        if (parameters[i] < 0) {
-            parameters[i] = 0
-        }
-        if (parameters[i] >= 10) {
-            endGame(i)
+        gameState.stats[i] += gameEvent.effect[i]
+        if (gameState.stats[i] > 9) {
+            gameOver(i)
         }
     }
-    return parameters
+    return [gameEvent, gameState]
 }
 
-function endGame(index: number) {
-    if (index === 0) {
-        return
+export function burrow() {
+    if (gameState.stats[1] - gameState.danger > -1 && gameState.stats[2] > 0) {
+        gameState.stats[1] -= gameState.danger
+        gameState.stats[2] -= 1
     }
+    return gameState.stats
 }
 
+// IS USED WHEN PARAMETER IS 10
+function gameOver(stat: number) {
+    if (stat == 0) {
+        gameState.text = "GAME OVER: DESTINY 10"
+    }
+    if (stat == 1) {
+        gameState.text = "GAME OVER: POTATOES 10"
+    }
+    if (stat == 2) {
+        gameState.text = "GAME OVER: ORCS 10"
+    }
+    return gameState.text
+}
+
+// HOOKS
 export const useDestiny = () => {
     const [destiny, setDestiny] = useState(0)
 
     const desChange = () => {
-        setDestiny(parameters[0])
+        setDestiny(gameState.stats[0])
         console.log(destiny)
     }
 
@@ -270,7 +128,7 @@ export const usePotatoes = () => {
     const [potatoes, setPotatoes] = useState(0)
 
     const potChange = () => {
-        setPotatoes(parameters[1])
+        setPotatoes(gameState.stats[1])
         console.log(potatoes)
     }
 
@@ -281,7 +139,7 @@ export const useOrcs = () => {
     const [orcs, setOrcs] = useState(0)
 
     const orcChange = () => {
-        setOrcs(parameters[2])
+        setOrcs(gameState.stats[2])
         console.log(orcs)
     }
 
@@ -289,19 +147,11 @@ export const useOrcs = () => {
 }
 
 export const useDanger = () => {
-    const [dangerLvl, setDangerLvl] = useState(1)
+    const [danger, setDanger] = useState(1)
 
     const dangerChange = () => {
-        setDangerLvl(danger)
+        setDanger(gameState.danger)
     }
 
-    return { dangerLvl, dangerChange }
-}
-
-export function burrow() {
-    if (parameters[1] - danger > -1 && parameters[2] > 0) {
-        parameters[1] -= danger
-        parameters[2] -= 1
-        return parameters
-    }
+    return { danger, dangerChange }
 }
