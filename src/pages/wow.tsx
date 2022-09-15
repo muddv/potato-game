@@ -43,6 +43,8 @@ const Wow: NextPage = () => {
                     <div>description {gameEventDescription}</div>
                     <div>effect {gameEventEffect}</div>
                 </div>
+                <div className="dice"></div>
+                <div className="dice1"></div>
             </div>
         </>
     )

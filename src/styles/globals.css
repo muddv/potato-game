@@ -1,3 +1,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .dice {
+        font-size: 100px;
+        font-weight: 500;
+    }
+    .dice::after {
+        content:'';
+        animation: rolling 2s linear infinite;
+      }
+      @keyframes rolling {
+        0% {content:'\2680';}
+        20% {content:'\2681';}
+        40% {content:'\2682';}
+        60% {content:'\2683';}
+        80% {content:'\2684';}
+        100% {content:'\2685';}
+      }
+    .dice1 {
+        font-size: 100px;
+        font-weight: 500;
+    }
+    .dice1::after {
+        content:'';
+        animation: rolling 2s linear infinite;
+      }
+      @keyframes rolling {
+        0% {content:'\2681';}
+        20% {content:'\2680';}
+        40% {content:'\2683';}
+        60% {content:'\2682';}
+        80% {content:'\2685';}
+        100% {content:'\2684';}
+      }   
+}
