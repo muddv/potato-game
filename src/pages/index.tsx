@@ -136,6 +136,18 @@ const Home: NextPage = () => {
 
     let gameOverContainerClass = gameOver ? "flex flex-col h-screen w-screen items-center" : "hidden"
 
+    const [burrowTooltip, setBurrowTooltip] = useState(false) 
+
+    function showBurrowTooltip() {
+        setBurrowTooltip(!burrowTooltip)
+    }
+
+    const [diceTooltip, setDiceTooltip] = useState(false) 
+
+    function showDiceTooltip() {
+        setDiceTooltip(!diceTooltip)
+    }
+
     return (
         <>
             <div className={gameContainerClass}>
@@ -188,12 +200,13 @@ const Home: NextPage = () => {
 
                 <div>
                     <div className="flex flex-row gap-10 mt-10">
-                        <button onClick={() => { burrow(); potChange(); orcChange(); }} className="border-2 border-black hover:bg-slate-400">
-                            BURROW: trade {danger} potato for -1 orc
-                        </button>
-                        <button onClick={handleDiceRoll} className="border-2 border-black hover:bg-slate-400">
+                        <button onMouseOver={showBurrowTooltip} onMouseOut={showBurrowTooltip} onClick={() => { burrow(); potChange(); orcChange(); }} className="border-2 border-black hover:bg-slate-400">
+                        BURROW</button>
+                        <div className={burrowTooltip ? "absolute bottom-[730px]" : "hidden"}>trade {danger} potato for -1 orc</div>
+                        <button onMouseOver={showDiceTooltip} onMouseOut={showDiceTooltip} onClick={handleDiceRoll} className="border-2 border-black hover:bg-slate-400">
                             roll dice
                         </button>
+                        <div className={diceTooltip ? "absolute bottom-[750px]" : "hidden"}>try growing some potatoes...</div>
                     </div>
                 </div>
                 <div className="flex flex-row">
