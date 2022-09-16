@@ -4,6 +4,7 @@ export let gameState = {
     danger: 1,
     stats: [0, 0, 0],
     text: "Your garden needs a lot of work",
+    currentRolls: [1, 1]
 }
 
 export let gameEvent =  {
@@ -18,6 +19,8 @@ export function diceRoll() {
     let roll2 = Math.floor(Math.random() * 6) + 1
     console.log("roll1: ", roll1, " ", "roll2 ", roll2)
     GameEventDispatcher([roll1, roll2])
+    gameState.currentRolls = [roll1, roll2]
+    return gameState.currentRolls
 }
 
 function GameEventDispatcher(rolls: number[]) {
@@ -83,6 +86,9 @@ function GameEventDispatcher(rolls: number[]) {
     }
     for (let i = 0; i < 3; i++) {
         gameState.stats[i] += gameEvent.effect[i]
+        if (gameState.stats[i] < 0) {
+            gameState.stats[i] = 0
+        }
         if (gameState.stats[i] > 9) {
             gameOver(i)
         }

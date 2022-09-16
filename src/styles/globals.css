@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 @layer components {
-    .dice {
+    .dice1 {
         font-size: 100px;
         font-weight: 500;
     }
-    .dice::after {
+    .dice1::after {
         content:'';
         animation: rolling 2s linear infinite;
       }
@@ -19,11 +19,11 @@
         80% {content:'\2684';}
         100% {content:'\2685';}
       }
-    .dice1 {
+    .dice2 {
         font-size: 100px;
         font-weight: 500;
     }
-    .dice1::after {
+    .dice2::after {
         content:'';
         animation: rolling 2s linear infinite;
       }
@@ -35,4 +35,55 @@
         80% {content:'\2685';}
         100% {content:'\2684';}
       }   
+
+      .dice-static1 {
+        font-size: 100px;
+        font-weight: 500;
+      }
+
+      .dice-static1::after {
+        content: "\2680"
+      }
+
+      .dice-static2 {
+        font-size: 100px;
+        font-weight: 500;
+      }
+
+      .dice-static2::after {
+        content: "\2681"
+      }
+      .dice-static3 {
+        font-size: 100px;
+        font-weight: 500;
+      }
+
+      .dice-static3::after {
+        content: "\2682"
+      }
+      .dice-static4 {
+        font-size: 100px;
+        font-weight: 500;
+      }
+
+      .dice-static4::after {
+        content: "\2683"
+      }
+      .dice-static5 {
+        font-size: 100px;
+        font-weight: 500;
+      }
+
+      .dice-static5::after {
+        content: "\2684"
+      }
+      .dice-static6 {
+        font-size: 100px;
+        font-weight: 500;
+      }
+
+      .dice-static6::after {
+        content: "\2685"
+      }
+
 }

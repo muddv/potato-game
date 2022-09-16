@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import { handleClientScriptLoad } from 'next/script'
 import { useState } from 'react'
-import { diceRoll, useDestiny, usePotatoes, useOrcs, txt, eventPlace, eventDescription, eventEffect, locationDiceRoll, burrow, useDanger } from "../game/game-logic"
+import { gameState, gameEvent, diceRoll, burrow, useDestiny, usePotatoes, useOrcs, useDanger } from "../game/game-logic"
 
 export function GameInterface(props: { destiny: number, potatoes: number, orcs: number }) {
 
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
   const { destiny, desChange } = useDestiny()
   const { potatoes, potChange } = usePotatoes()
   const { orcs, orcChange } = useOrcs()
-  const { dangerLvl, dangerChange } = useDanger()
+  const { danger, dangerChange } = useDanger()
 
   const [text, setText] = useState(txt)
 
