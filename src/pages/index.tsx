@@ -1,8 +1,9 @@
 import type { NextPage } from 'next'
 import { useState } from 'react'
 import { gameState, gameEvent, diceRoll, burrow, useDestiny, usePotatoes, useOrcs, useDanger } from "../game/game-logic"
+import GameOverScreen from './gameOver'
 
-const Wow: NextPage = () => {
+const Home: NextPage = () => {
 
     const { destiny, desChange } = useDestiny()
     const { potatoes, potChange } = usePotatoes()
@@ -30,6 +31,7 @@ const Wow: NextPage = () => {
         displayEventEffect();
         animateDice();
         showEventWindow(false);
+        endGame();
     }
 
     function animateDice() {
@@ -110,12 +112,39 @@ const Wow: NextPage = () => {
     }
     let containerClass = showEvent ? "mt-14 absolute z-10 bg-white border-2 border-black w-64 h-64" : "hidden"
 
+    const [gameOver, setGameOver] = useState(false)
+
+    let gameOverStat: number
+
+    function endGame() {
+        if (destiny > 9 || potatoes > 9 || orcs > 9) {
+            setGameOver(true)
+            if (destiny > 9) {
+                gameOverStat = 0
+            }
+            if (potatoes > 9) {
+                gameOverStat = 0
+            }
+            if (orcs > 9) {
+                gameOverStat = 0
+            }
+            return gameOverStat
+        }
+    }
+
+    let gameContainerClass = gameOver ? "hidden" : "flex flex-col h-screen w-screen items-center"
+
+    let gameOverContainerClass = gameOver ? "flex flex-col h-screen w-screen items-center" : "hidden"
+
     return (
         <>
-            <div className="flex flex-col h-screen w-screen items-center">
+            <div className={gameContainerClass}>
+                <div className={gameOverContainerClass}> <GameOverScreen statIndex={gameOverStat!}></GameOverScreen></div>
                 <h1 className="text-xl font-semibold mt-10">
                     POTATO GAME
                 </h1>
+
+
 
                 <div className="w-3/4">
                     You are a halfing, just trying to exist meanwhile, the dark
@@ -176,4 +205,4 @@ const Wow: NextPage = () => {
     )
 }
 
-export default Wow
+export default Home
