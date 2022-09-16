@@ -7,7 +7,7 @@ export let gameState = {
     currentRolls: [1, 1]
 }
 
-export let gameEvent =  {
+export let gameEvent = {
     location: "Somewhere",
     description: "Something happened",
     effect: [0, 0, 0]
@@ -79,10 +79,22 @@ function GameEventDispatcher(rolls: number[]) {
         }
     }
     else if (rolls[0] > 4) {
-        gameEvent.location = "The world becomes more dangerous"
-        gameEvent.description = "Everywhere you look there seems to be more signs of dark forces approaching, you will need more potatoes. (Burrowing now costs more.)"
-        gameEvent.effect = [0, 0, 0]
-        gameState.danger += 1
+        if (gameState.stats[1] > 3) {
+            gameEvent.location = "The world becomes more dangerous"
+            gameEvent.description = "Everywhere you look there seems to be more signs of dark forces approaching, you will need more potatoes. (Burrowing now costs more.)"
+            gameEvent.effect = [0, 0, 0]
+            gameState.danger += 1
+        }
+        else if (rolls[1] < 3) {
+            gameEvent.location = "At your home" 
+            gameEvent.description = "You find a misterious sack of potatoes under your dinner table... how did it get here"
+            gameEvent.effect = [1, 1, 0]
+        }
+        else {
+            gameEvent.location = "At the center of the village" 
+            gameEvent.description = "You decide to trade some of your potatoes for other things you need, when you come back you notice a note at your door... best ignore it"
+            gameEvent.effect = [1, -1, 0]
+        }
     }
     for (let i = 0; i < 3; i++) {
         gameState.stats[i] += gameEvent.effect[i]

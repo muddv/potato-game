@@ -1,4 +1,5 @@
 import type { NextPage } from 'next'
+import Head from 'next/head'
 import { useState } from 'react'
 import { gameState, gameEvent, diceRoll, burrow, useDestiny, usePotatoes, useOrcs, useDanger } from "../game/game-logic"
 import GameOverScreen from './gameOver'
@@ -117,41 +118,47 @@ const Home: NextPage = () => {
     let gameOverStat: number
 
     function endGame() {
-        if (destiny > 9 || potatoes > 9 || orcs > 9) {
+        if (destiny > 1 || potatoes > 1 || orcs > 1) {
             setGameOver(true)
-            if (destiny > 9) {
+            if (destiny > 1) {
                 gameOverStat = 0
             }
-            if (potatoes > 9) {
+            if (potatoes > 1) {
                 gameOverStat = 0
             }
-            if (orcs > 9) {
+            if (orcs > 1) {
                 gameOverStat = 0
             }
+            console.log("gameOverStat", gameOverStat)
             return gameOverStat
         }
     }
 
     let gameContainerClass = gameOver ? "hidden" : "flex flex-col h-screen w-screen items-center"
 
-    let gameOverContainerClass = gameOver ? "flex flex-col h-screen w-screen items-center" : "hidden"
 
-    const [burrowTooltip, setBurrowTooltip] = useState(false) 
+    const [burrowTooltip, setBurrowTooltip] = useState(false)
 
     function showBurrowTooltip() {
         setBurrowTooltip(!burrowTooltip)
     }
 
-    const [diceTooltip, setDiceTooltip] = useState(false) 
+    const [diceTooltip, setDiceTooltip] = useState(false)
 
     function showDiceTooltip() {
         setDiceTooltip(!diceTooltip)
     }
 
+    let gameOverCls = gameOver ? "" : "hidden"
+
     return (
         <>
+            <Head>
+                <title>Potato Game</title>
+                <meta name="description" content="A gardening game" />
+            </Head>
+            <div className={gameOverCls}>GAME OVER</div>
             <div className={gameContainerClass}>
-                <div className={gameOverContainerClass}> <GameOverScreen statIndex={gameOverStat!}></GameOverScreen></div>
                 <h1 className="text-xl font-semibold mt-10">
                     POTATO GAME
                 </h1>
@@ -201,7 +208,7 @@ const Home: NextPage = () => {
                 <div>
                     <div className="flex flex-row gap-10 mt-10">
                         <button onMouseOver={showBurrowTooltip} onMouseOut={showBurrowTooltip} onClick={() => { burrow(); potChange(); orcChange(); }} className="border-2 border-black hover:bg-slate-400">
-                        BURROW</button>
+                            BURROW</button>
                         <div className={burrowTooltip ? "absolute bottom-[730px]" : "hidden"}>trade {danger} potato for -1 orc</div>
                         <button onMouseOver={showDiceTooltip} onMouseOut={showDiceTooltip} onClick={handleDiceRoll} className="border-2 border-black hover:bg-slate-400">
                             roll dice
