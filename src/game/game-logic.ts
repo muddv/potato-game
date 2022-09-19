@@ -15,8 +15,24 @@ export let gameEvent = {
 
 export function diceRoll() {
     // Rolls 2 d6s
-    let roll1 = Math.floor(Math.random() * 6) + 1
+    let roll1
+    if ((gameState.stats[1] > 1 && gameState.danger < 3) 
+    || (gameState.stats[1] > 3 && gameState.danger < 6) 
+    || (gameState.stats[1] > 6 && gameState.danger < 10)) {
+        roll1 = Math.floor(Math.random() * 6) + 1
+        console.log("HERE")
+    }
+    else {
+        roll1 = Math.floor(Math.random() * 4) + 1
+        console.log("why")
+    } 
     let roll2 = Math.floor(Math.random() * 6) + 1
+    //if ((roll1 > 4) && (gameState.stats[1] > 1 && gameState.danger < 3) 
+    //|| (gameState.stats[1] > 3 && gameState.danger < 6) 
+    //|| (gameState.stats[1] > 6 && gameState.danger < 10)) {
+      //  roll1 = Math.floor(Math.random() * 4) + 1000
+       // console.log("?????")
+    //}
     console.log("roll1: ", roll1, " ", "roll2 ", roll2)
     GameEventDispatcher([roll1, roll2])
     gameState.currentRolls = [roll1, roll2]
@@ -79,22 +95,23 @@ function GameEventDispatcher(rolls: number[]) {
         }
     }
     else if (rolls[0] > 4) {
-        if (gameState.stats[1] > 3) {
+        if ((gameState.stats[1] > 1 && gameState.danger < 3) || (gameState.stats[1] > 3 && gameState.danger < 6) || (gameState.stats[1] > 6 && gameState.danger < 10)) {
             gameEvent.location = "The world becomes more dangerous"
-            gameEvent.description = "Everywhere you look there seems to be more signs of dark forces approaching, you will need more potatoes. (Burrowing now costs more.)"
+            gameEvent.description = "Everywhere you look there seems to be more signs of dark forces approaching, you will need more potatoes. (Hurling now costs more.)"
             gameEvent.effect = [0, 0, 0]
             gameState.danger += 1
         }
-        else if (rolls[1] < 3) {
-            gameEvent.location = "At your home" 
-            gameEvent.description = "You find a misterious sack of potatoes under your dinner table... how did it get here"
-            gameEvent.effect = [1, 1, 0]
-        }
-        else {
-            gameEvent.location = "At the center of the village" 
-            gameEvent.description = "You decide to trade some of your potatoes for other things you need, when you come back you notice a note at your door... best ignore it"
-            gameEvent.effect = [1, -1, 0]
-        }
+
+        //else if (rolls[1] < 3) {
+        // gameEvent.location = "At your home"
+        //gameEvent.description = "You find a misterious sack of potatoes under your dinner table... how did it get here"
+        // gameEvent.effect = [1, 1, 0]
+        // }
+        // else {
+        //  gameEvent.location = "At the center of the village"
+        // gameEvent.description = "You decide to trade some of your potatoes for other things you need, when you come back you notice a note at your door... best ignore it"
+        //gameEvent.effect = [1, -1, 0]
+        // }
     }
     for (let i = 0; i < 3; i++) {
         gameState.stats[i] += gameEvent.effect[i]
@@ -108,7 +125,7 @@ function GameEventDispatcher(rolls: number[]) {
     return [gameEvent, gameState]
 }
 
-export function burrow() {
+export function hurl() {
     if (gameState.stats[1] - gameState.danger > -1 && gameState.stats[2] > 0) {
         gameState.stats[1] -= gameState.danger
         gameState.stats[2] -= 1
