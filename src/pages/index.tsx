@@ -262,11 +262,11 @@ const Home: NextPage = () => {
                     <div className="flex flex-row gap-10 mt-10">
                         <button onMouseOver={showHurlTooltip} onMouseOut={showHurlTooltip} onClick={() => { hurl(); potChange(); orcChange(); }} className="border-2 border-black hover:bg-slate-400">
                             Hurl in the backgarden</button>
-                        <div className={hurlTooltip ? "absolute bottom-[640px] text-gray-600" : "hidden"}>trade {danger} potato for -1 orc</div>
+                        <div className={hurlTooltip ? "absolute bottom-[550px] text-gray-600" : "hidden"}>trade {danger} potato for -1 orc</div>
                         <button onMouseOver={showDiceTooltip} onMouseOut={showDiceTooltip} onClick={handleDiceRoll} className="border-2 border-black hover:bg-slate-400">
                             roll dice
                         </button>
-                        <div className={diceTooltip ? "absolute bottom-[640px] text-gray-600" : "hidden"}>try growing some potatoes...</div>
+                        <div className={diceTooltip ? "absolute bottom-[550px] text-gray-600" : "hidden"}>try growing some potatoes...</div>
                     </div>
                 </div>
                 <div className="flex flex-row">
